@@ -307,7 +307,7 @@ function Nav({ active, onNavigate }) {
 
 function SectionTitle({ no, en, jp }) {
   return (
-    <div className="sec-head r">
+    <div className="sec-head">
       <span className="sec-no">{no}</span>
       <h2 className="sec-title">{en}<span className="dot">.</span></h2>
       <span className="sec-jp">{jp}</span>
