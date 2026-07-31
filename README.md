@@ -1,6 +1,6 @@
-# Ryo.S Portfolio Site v3 — TERMINAL
+# Ryo.S Portfolio Site — COLLAGE
 
-ハッカー端末をテーマにしたポートフォリオ。起動ログのタイプ演出、CRT走査線+グリッチ、デジタルレイン背景、画面下の常設コマンドライン(`help` / セクション名 / `unlock` で隠し部屋)。
+スクラップブック(切り貼り)をテーマにしたポートフォリオ。マスキングテープ・ポラロイド・破り紙・手描きドゥードルの装飾はすべて余白に置き、本文は白いカード＋黒文字で可読性を確保。ダイヤルを回すと隠し部屋(Hobbies)が開く。React + GSAP + Lenis / esbuild ビルド / Cloudflare Pages。
 
 ## 構成
 
