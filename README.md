@@ -1,6 +1,6 @@
-# Ryo.S Portfolio Site v2
+# Ryo.S Portfolio Site v3 — TERMINAL
 
-黒基調のエディトリアルデザイン + モーション演出(Lenis スムーススクロール / GSAP / Canvas生成アニメ)のポートフォリオサイト。
+ハッカー端末をテーマにしたポートフォリオ。起動ログのタイプ演出、CRT走査線+グリッチ、デジタルレイン背景、画面下の常設コマンドライン(`help` / セクション名 / `unlock` で隠し部屋)。
 
 ## 構成
 
@@ -31,18 +31,19 @@ GitHub リポジトリと Cloudflare Pages を連携済みなら、**main に pu
 ## コンテンツの更新場所 (src/app.jsx)
 
 - `WORKS` — 制作実績(ARG Project は現在プレースホルダ)
-- `HOBBIES` / `FEATURED_GAMES` — 隠しページの内容
-- `STRENGTHS` / `FAQS` — 強み・FAQ
+- `HOBBIES` / `FEATURED_GAMES` — 隠し部屋(`unlock`)の内容
+- `STRENGTHS`(levelはゲージ%) / `FAQS` — 強み・FAQ
 - Achievements の数値は `Achievements()` 内の `stats`
+- コマンドの追加は `App()` 内の `handleCommand`
 
 ## デザイントークン (assets/css/style.css の :root)
 
-- `--bg0/--bg1/--bg2` 黒基調の背景 3 段階
-- `--paper` 系 ライトセクション(Works / Achievements)
-- `--accent` テラコッタ #D65C3F(アクセントはこの1色に集約)
+- `--bg` 端末ブラック / `--mint` `--green` 蛍光グリーン系
+- `--cyan` 出力・リンク / `--amber` 警告 / `--red` エラー
+- 走査線・グリッチ等の演出は EXTRA MOTION セクション
 
 ## アクセシビリティ / モーション
 
 - `prefers-reduced-motion: reduce` でスムーススクロール・Canvas・カーソル演出・リビールをすべて無効化
 - FAQ は `aria-expanded` 付きの button、ナビも button 化済み
-- カスタムカーソルはマウス環境(pointer: fine)のみ
+- 走査線/グリッチ/レインは prefers-reduced-motion で全停止
