@@ -170,6 +170,61 @@ function useDrift(selector) {
   }, []);
 }
 
+// scroll-triggered choreography: headings rise, cards fly in, tape rotates, photos parallax
+function useScrollChoreo(deps) {
+  useEffect(() => {
+    if (REDUCED) return;
+    const ctx = gsap.context(() => {
+      // section headings pop up
+      gsap.utils.toArray('.sec-head').forEach(el => {
+        gsap.from(el, {
+          y: 40, opacity: 0, duration: 0.7, ease: 'power3.out',
+          scrollTrigger: { trigger: el, start: 'top 82%' },
+        });
+      });
+      // cards slide in from alternating sides + settle rotation
+      gsap.utils.toArray('.work-card, .str-card, .ach-card, .hobby-card, .game-card').forEach((el, i) => {
+        gsap.from(el, {
+          x: i % 2 === 0 ? -70 : 70, y: 40, opacity: 0, rotation: i % 2 === 0 ? -8 : 8,
+          duration: 0.7, ease: 'power3.out',
+          scrollTrigger: { trigger: el, start: 'top 88%' },
+        });
+      });
+      // tape strips rotate-in like being stuck down
+      gsap.utils.toArray('.tape').forEach(el => {
+        gsap.from(el, {
+          scaleX: 0, rotation: '-=25', opacity: 0, transformOrigin: 'left center',
+          duration: 0.5, ease: 'back.out(2)',
+          scrollTrigger: { trigger: el, start: 'top 92%' },
+        });
+      });
+      // polaroid / note cards parallax drift
+      gsap.utils.toArray('.polaroid, .note-card, .contact-card').forEach((el, i) => {
+        gsap.fromTo(el, { y: 40 }, {
+          y: -40, ease: 'none',
+          scrollTrigger: { trigger: el, start: 'top bottom', end: 'bottom top', scrub: true },
+        });
+      });
+      // photo inside polaroid subtle zoom parallax
+      gsap.utils.toArray('.polaroid-img img, .wc-thumb img').forEach(el => {
+        gsap.fromTo(el, { scale: 1.12, yPercent: -6 }, {
+          yPercent: 6, ease: 'none',
+          scrollTrigger: { trigger: el, start: 'top bottom', end: 'bottom top', scrub: true },
+        });
+      });
+      // section title accent underline sweeps
+      gsap.utils.toArray('.hero-title .hl, .contact-title .hl').forEach(el => {
+        gsap.from(el, {
+          '--hlw': '0%', duration: 0.8, ease: 'power2.out',
+          scrollTrigger: { trigger: el, start: 'top 85%' },
+        });
+      });
+    });
+    ScrollTrigger.refresh();
+    return () => ctx.revert();
+  }, deps);
+}
+
 function Magnetic({ children, strength = 0.28 }) {
   const ref = useRef(null);
   useEffect(() => {
@@ -516,7 +571,7 @@ function WorkCard({ work, i }) {
   const showImg = work.image && !failed;
   return (
     <Tag
-      className={`work-card r${work.locked ? ' locked' : ''}`}
+      className={`work-card${work.locked ? ' locked' : ''}`}
       href={url}
       target={work.url ? '_blank' : undefined}
       rel={work.url ? 'noopener noreferrer' : undefined}
@@ -563,7 +618,7 @@ function Strengths() {
         <p className="sec-intro r d1">専門知識と技術開発力、そしてチームでのコミュニケーション力を活かして、困難なプロジェクトを前進させます。</p>
         <div className="str-grid">
           {STRENGTHS.map((s, i) => (
-            <div key={s.en} className="str-card r" style={{ '--tape': s.tape, transitionDelay: `${(i % 2) * 0.08}s` }}>
+            <div key={s.en} className="str-card" style={{ '--tape': s.tape, transitionDelay: `${(i % 2) * 0.08}s` }}>
               <Tape color={s.tape} className="t-str" />
               <img className="str-icon" src={s.icon} alt="" loading="lazy" />
               <span className="str-en">{s.en}</span>
@@ -592,7 +647,7 @@ function Achievements() {
         <SectionTitle no="04" en="Achievements" jp="実績" />
         <div className="ach-grid">
           {stats.map((s, i) => (
-            <div key={i} className="ach-card r" style={{ '--tape': s.tape, transitionDelay: `${(i % 4) * 0.07}s` }}>
+            <div key={i} className="ach-card" style={{ '--tape': s.tape, transitionDelay: `${(i % 4) * 0.07}s` }}>
               <Tape color={s.tape} className="t-ach" />
               <img className="ach-icon" src={s.icon} alt="" loading="lazy" />
               <div className="ach-val"><CountUp value={s.value} /><span className="ach-unit">{s.unit}</span></div>
@@ -698,7 +753,7 @@ function HobbiesPage({ onBack }) {
           <SectionTitle no="★" en="What I Like" jp="好きなこと" />
           <div className="hobby-grid">
             {HOBBIES.map((h, i) => (
-              <article className="hobby-card r" key={h.name} style={{ '--tape': h.tape, transitionDelay: `${(i % 3) * 0.08}s` }}>
+              <article className="hobby-card" key={h.name} style={{ '--tape': h.tape, transitionDelay: `${(i % 3) * 0.08}s` }}>
                 <Tape color={h.tape} className="t-card" />
                 <div className="hb-head"><img src={h.icon} alt="" className="hb-icon" loading="lazy" /><span className="hb-kana">{h.kana}</span></div>
                 <h3 className="wc-title">{h.name}</h3>
@@ -715,7 +770,7 @@ function HobbiesPage({ onBack }) {
           <p className="sec-intro r d1">どのゲームも一辺倒で応用の利かないものではなく、現実で活きる要素を持っているため今も愛好しています。</p>
           <div className="game-grid">
             {FEATURED_GAMES.map((g, i) => (
-              <a className="game-card r" key={g.name} href={g.url} target="_blank" rel="noopener noreferrer" style={{ transitionDelay: `${(i % 5) * 0.06}s` }}>
+              <a className="game-card" key={g.name} href={g.url} target="_blank" rel="noopener noreferrer" style={{ transitionDelay: `${(i % 5) * 0.06}s` }}>
                 <div className="gc-head"><img src={g.icon} alt="" className="gc-icon" loading="lazy" /><span className="gc-no">{String(i + 1).padStart(2, '0')}</span></div>
                 <span className="gc-label">{g.label}</span>
                 <h3 className="gc-name">{g.name}</h3>
@@ -737,6 +792,7 @@ function App() {
   const [view, setView] = useState(window.location.hash === '#hobbies' ? 'hobbies' : 'main');
   useReveal([view]);
   useDrift('.paper-scrap, .doodle');
+  useScrollChoreo([view]);
 
   useEffect(() => {
     if (REDUCED) return;
