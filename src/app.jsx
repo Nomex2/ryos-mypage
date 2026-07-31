@@ -148,9 +148,16 @@ function useReveal(deps) {
 }
 
 // types out lines one after another
-function BootLog({ lines, speed = 14, startDelay = 300 }) {
+function BootLog({ lines, speed = 14, startDelay = 300, onDone }) {
   const [shown, setShown] = useState(REDUCED ? lines.map(l => l.text) : lines.map(() => ''));
   const [done, setDone] = useState(REDUCED);
+  const doneSent = useRef(false);
+  useEffect(() => {
+    if (done && !doneSent.current) {
+      doneSent.current = true;
+      onDone && onDone();
+    }
+  }, [done, onDone]);
   useEffect(() => {
     if (REDUCED) return;
     let li = 0, ci = 0, timer;
@@ -312,11 +319,19 @@ function TopBar({ active }) {
 
 
 // command typed out when it scrolls into view
-function TypedCmd({ text }) {
+function TypedCmd({ text, onDone }) {
   const full = text.length;
   const [n, setN] = useState(REDUCED ? full : 0);
   const [started, setStarted] = useState(REDUCED);
+  const doneSent = useRef(false);
   const ref = useRef(null);
+  useEffect(() => {
+    if (n >= full && !doneSent.current) {
+      doneSent.current = true;
+      const t = setTimeout(() => onDone && onDone(), 180);
+      return () => clearTimeout(t);
+    }
+  }, [n, full, onDone]);
   useEffect(() => {
     if (REDUCED) return;
     const io = new IntersectionObserver(([e]) => {
@@ -378,10 +393,12 @@ function CmdBar({ onCommand }) {
 
 // section = an executed command with its output
 function Cmd({ id, cmd, note, children }) {
+  const [typed, setTyped] = useState(REDUCED);
+  const onDone = useCallback(() => setTyped(true), []);
   return (
-    <section id={id} className="cmd-sec" data-label={id}>
+    <section id={id} className={`cmd-sec${typed ? ' typed' : ''}`} data-label={id}>
       <div className="w">
-        <p className="sec-prompt"><span className="p1">ryo.s@future</span><span className="p2">:~$</span> <TypedCmd text={cmd} />{note && <span className="p-note">  # {note}</span>}</p>
+        <p className="sec-prompt"><span className="p1">ryo.s@future</span><span className="p2">:~$</span> <TypedCmd text={cmd} onDone={onDone} />{note && typed && <span className="p-note">  # {note}</span>}</p>
         <div className="sec-out">{children}</div>
       </div>
     </section>
@@ -399,10 +416,12 @@ const ASCII_LOGO = String.raw`
 ╚═╝  ╚═╝   ╚═╝    ╚═════╝ ╚═╝╚══════╝`;
 
 function Hero({ onNav }) {
+  const [typed, setTyped] = useState(REDUCED);
+  const onDone = useCallback(() => setTyped(true), []);
   return (
-    <section id="home" className="hero" data-label="home">
+    <section id="home" className={`hero${typed ? ' typed' : ''}`} data-label="home">
       <div className="w">
-        <BootLog lines={[
+        <BootLog onDone={onDone} lines={[
           { text: 'ryo.s@future:~$ boot portfolio --fresh --fluid', cls: 'c-cmd' },
           { text: '[ OK ] loading modules... ai / web / security', cls: 'c-ok' },
           { text: '[ OK ] whitehat_contest.award found (x1)', cls: 'c-ok' },
@@ -478,7 +497,7 @@ function WorkRow({ work, index }) {
       href={url}
       target={work.url ? '_blank' : undefined}
       rel={work.url ? 'noopener noreferrer' : undefined}
-      style={{ transitionDelay: `${index * 0.05}s` }}
+      style={{ transitionDelay: `${index * 0.18}s` }}
     >
       <div className="wr-head">
         <span className="wr-perm">{work.locked ? '-r--------' : 'drwxr-xr-x'}</span>
@@ -520,7 +539,7 @@ function Strengths() {
     <Cmd id="strengths" cmd="cat skills.log" note="強み">
       <div className="skill-list" ref={ref}>
         {STRENGTHS.map((s, i) => (
-          <div key={s.en} className="skill r" style={{ transitionDelay: `${i * 0.07}s` }}>
+          <div key={s.en} className="skill r" style={{ transitionDelay: `${i * 0.18}s` }}>
             <div className="sk-head">
               <span className="sk-en">{s.en}</span>
               <span className="sk-jp">{s.name}</span>
@@ -548,7 +567,7 @@ function Achievements() {
     <Cmd id="achievements" cmd="./stats --summary" note="実績">
       <div className="stat-grid">
         {stats.map((s, i) => (
-          <div key={s.label} className="stat r" style={{ transitionDelay: `${i * 0.07}s` }}>
+          <div key={s.label} className="stat r" style={{ transitionDelay: `${i * 0.15}s` }}>
             <p className="st-label">$ {s.label}</p>
             <p className="st-val"><CountUp value={s.value} /><span className="st-unit">{s.unit}</span></p>
             <p className="st-jp">{s.jp}</p>
@@ -617,11 +636,13 @@ function Contact() {
 }
 
 function HobbiesPage({ onBack }) {
+  const [typed, setTyped] = useState(REDUCED);
+  const onDone = useCallback(() => setTyped(true), []);
   return (
     <main className="hobby-page">
-      <section className="cmd-sec" data-label="hobbies">
+      <section className={`cmd-sec${typed ? ' typed' : ''}`} data-label="hobbies">
         <div className="w">
-          <BootLog lines={[
+          <BootLog onDone={onDone} lines={[
             { text: 'ryo.s@future:~$ unlock', cls: 'c-cmd' },
             { text: 'verifying passphrase... ACCESS GRANTED.', cls: 'c-ok' },
             { text: 'mounting /hidden/hobbies ... done. ようこそ、隠し部屋へ。', cls: 'c-warn' },
@@ -633,7 +654,7 @@ function HobbiesPage({ onBack }) {
           <p className="sec-prompt r d2" style={{ marginTop: '70px' }}><span className="p1">ryo.s@future</span><span className="p2">:/hidden$</span> ls ./hobbies</p>
           <div className="hobby-grid">
             {HOBBIES.map((hobby, index) => (
-              <article className="hobby-card r" key={hobby.name} style={{ transitionDelay: `${index * 0.07}s` }}>
+              <article className="hobby-card r" key={hobby.name} style={{ transitionDelay: `${index * 0.15}s` }}>
                 <div className="hb-head">
                   <span className="hb-dir">drwx------</span>
                   <span className="hb-no">0{index + 1}</span>
@@ -649,7 +670,7 @@ function HobbiesPage({ onBack }) {
           <p className="sec-prompt r" style={{ marginTop: '80px' }}><span className="p1">ryo.s@future</span><span className="p2">:/hidden$</span> top -g <span className="p-note">  # 現実で活きる要素があるゲームたち</span></p>
           <div className="game-list">
             {FEATURED_GAMES.map((game, index) => (
-              <a className="game-row r" key={game.name} href={game.url} target="_blank" rel="noopener noreferrer" style={{ transitionDelay: `${index * 0.06}s` }}>
+              <a className="game-row r" key={game.name} href={game.url} target="_blank" rel="noopener noreferrer" style={{ transitionDelay: `${index * 0.12}s` }}>
                 <span className="gm-no">PID {1000 + index}</span>
                 <span className="gm-name">{game.name}</span>
                 <span className="gm-label">{game.label}</span>
