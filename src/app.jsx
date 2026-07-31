@@ -257,6 +257,47 @@ function CountUp({ value, duration = 1200 }) {
   return <span ref={ref}>{display}</span>;
 }
 
+
+// BIOS-style boot overlay on first access
+function BootScreen({ onDone }) {
+  const LINES = [
+    'RYOS BIOS v3.0.0 — SEKINO RYO SYSTEMS',
+    'CPU: CURIOSITY CORE x2 ......... OK',
+    'MEM: PASSION 640K (OVERCLOCKED) OK',
+    'MOUNT /portfolio ............... OK',
+    'MOUNT /hidden .............. LOCKED',
+    'STARTING SESSION ...',
+  ];
+  const [idx, setIdx] = useState(0);
+  const [leaving, setLeaving] = useState(false);
+  useEffect(() => {
+    if (idx < LINES.length) {
+      const t = setTimeout(() => setIdx(idx + 1), 260 + Math.random() * 220);
+      return () => clearTimeout(t);
+    }
+    const t = setTimeout(() => setLeaving(true), 450);
+    return () => clearTimeout(t);
+  }, [idx]);
+  useEffect(() => {
+    if (!leaving) return;
+    const t = setTimeout(onDone, 550);
+    return () => clearTimeout(t);
+  }, [leaving, onDone]);
+  const skip = () => { setIdx(LINES.length); setLeaving(true); };
+  return (
+    <div className={`boot-screen${leaving ? ' leave' : ''}`} onClick={skip} role="presentation">
+      <div className="boot-inner">
+        {LINES.slice(0, idx).map((l, i) => (
+          <p key={i} className={`boot-line${l.includes('LOCKED') ? ' c-warn' : ''}`}>{l}</p>
+        ))}
+        {idx < LINES.length && <p className="boot-line"><span className="caret" /></p>}
+        <div className="boot-bar" aria-hidden="true"><span style={{ width: `${Math.min(100, idx / LINES.length * 100)}%` }} /></div>
+        <p className="boot-skip">click to skip</p>
+      </div>
+    </div>
+  );
+}
+
 /* ── chrome ─────────────────────────────────────── */
 
 function TopBar({ active }) {
@@ -267,6 +308,30 @@ function TopBar({ active }) {
       <span className="tb-right"><span className="tb-dot" />SECURE — <Clock /></span>
     </header>
   );
+}
+
+
+// command typed out when it scrolls into view
+function TypedCmd({ text }) {
+  const full = text.length;
+  const [n, setN] = useState(REDUCED ? full : 0);
+  const [started, setStarted] = useState(REDUCED);
+  const ref = useRef(null);
+  useEffect(() => {
+    if (REDUCED) return;
+    const io = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) { setStarted(true); io.disconnect(); }
+    }, { threshold: 0.6 });
+    if (ref.current) io.observe(ref.current);
+    return () => io.disconnect();
+  }, []);
+  useEffect(() => {
+    if (!started || n >= full) return;
+    const t = setTimeout(() => setN(v => Math.min(full, v + 1 + Math.floor(Math.random() * 2))), 24);
+    return () => clearTimeout(t);
+  }, [started, n, full]);
+  const done = n >= full;
+  return <span ref={ref}>{text.slice(0, n)}{started && !done ? <span className="caret" /> : null}{!started ? '\u00A0' : null}</span>;
 }
 
 // command line at the bottom — the site's controller & hidden-room key
@@ -316,7 +381,7 @@ function Cmd({ id, cmd, note, children }) {
   return (
     <section id={id} className="cmd-sec" data-label={id}>
       <div className="w">
-        <p className="sec-prompt r"><span className="p1">ryo.s@future</span><span className="p2">:~$</span> {cmd}{note && <span className="p-note">  # {note}</span>}</p>
+        <p className="sec-prompt"><span className="p1">ryo.s@future</span><span className="p2">:~$</span> <TypedCmd text={cmd} />{note && <span className="p-note">  # {note}</span>}</p>
         <div className="sec-out">{children}</div>
       </div>
     </section>
@@ -609,6 +674,7 @@ function HobbiesPage({ onBack }) {
 function App() {
   const [active, setActive] = useState('home');
   const [view, setView] = useState(window.location.hash === '#hobbies' ? 'hobbies' : 'main');
+  const [booted, setBooted] = useState(REDUCED);
   useReveal([view]);
 
   useEffect(() => {
@@ -694,6 +760,7 @@ function App() {
 
   return (
     <>
+      {!booted && <BootScreen onDone={() => setBooted(true)} />}
       <Rain />
       <div className="crt" aria-hidden="true"></div>
       <div className="sweep" aria-hidden="true"></div>
