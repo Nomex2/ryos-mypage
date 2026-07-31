@@ -7,15 +7,16 @@ import Lenis from 'lenis';
 gsap.registerPlugin(ScrollTrigger);
 
 const REDUCED = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const FINE_POINTER = typeof window !== 'undefined' && window.matchMedia('(pointer: fine)').matches;
 
 let lenis = null;
-const scrollToEl = (el, offset = -70) => {
+const scrollToEl = (el, offset = -80) => {
   if (!el) return;
   if (lenis) lenis.scrollTo(el, { offset, duration: 1.1 });
   else window.scrollTo({ top: el.offsetTop + offset, behavior: REDUCED ? 'auto' : 'smooth' });
 };
 
-const SECTIONS = ['home', 'about', 'works', 'strengths', 'achievements', 'faq', 'contact'];
+const NAVS = ['Home', 'About', 'Works', 'Strengths', 'Achievements', 'FAQ'];
 
 const HOBBIES = [
   {
@@ -23,6 +24,7 @@ const HOBBIES = [
     kana: 'AI開発',
     body: '新しいAPIやモデルを触りながら、日常の小さな不便を解くツールを作るのが好きです。',
     note: 'prototype / prompt / automation',
+    tape: '#7FD0FF',
     icon: 'uploads/43_ai_technology_brain_icon.png',
   },
   {
@@ -30,6 +32,7 @@ const HOBBIES = [
     kana: 'サッカー',
     body: '小学校から高校まで続けてきた原点。チームで考え、走り、流れを変える感覚が今の開発にもつながっています。特に諦めない姿勢は、どんな難題にも挑む原動力になっています。',
     note: 'teamwork / tactics / persistence',
+    tape: '#D8F24B',
     icon: 'uploads/44_soccer_icon.png',
   },
   {
@@ -37,6 +40,7 @@ const HOBBIES = [
     kana: '朝ごはん屋さんめぐり',
     body: '朝活という習慣を大切にするため最近特にはまっています。空間や人柄などが特に顕著に反映されているため、新しい視点やアイデアを得るのに最適な趣味です。',
     note: 'morning routine / atmosphere / inspiration',
+    tape: '#FFB84D',
     icon: 'uploads/52_breakfast_tour_icon.png',
   },
 ];
@@ -89,13 +93,14 @@ const WORKS = [
     title: 'EduCompass',
     tags: ['AI', 'Education', 'Data Analysis'],
     desc: '生徒の課題解決能力や柔軟性などの数値データを用いてAI分析を行い、成長予測、クラス替え後の雰囲気推測、文部科学省の示す教育プロジェクト提案などを行う教師補助AIツール。',
+    tape: '#7C5CFF',
     image: 'uploads/work_Educompass.webp',
   },
   {
-    title: 'Lab Glossary',
-    jp: '研究室用語ライブラリ',
+    title: '研究室用語ライブラリ',
     tags: ['Static HTML', 'WebDAV', 'Glossary'],
     desc: '研究室活動で出てきた用語を解説し、タグ分けして閲覧しやすくした静的HTMLアプリケーション。WEBDAV環境で動く軽量な用語ライブラリです。',
+    tape: '#22C1C3',
     url: 'https://nomex2.github.io/product/lab-glossary/',
     image: 'uploads/work_lab_glossary.webp',
   },
@@ -103,13 +108,15 @@ const WORKS = [
     title: 'Portfolio Site',
     tags: ['Portfolio', 'React', 'UI Design'],
     desc: '自己紹介、制作実績、強み、趣味をまとめたポートフォリオサイト。見せ方や動きも含めて、自分らしさが伝わる構成を目指して構築しました。',
+    tape: '#FFB84D',
     url: 'https://nomex2.github.io/product/',
     image: 'uploads/work_portfolio_site.webp',
   },
   {
     title: 'Secure Quest',
     tags: ['React', 'Vite', 'Flask', 'SQLite'],
-    desc: 'セキュリティニュースを題材に、毎日クエスト形式でサイバーセキュリティを学べる学習アプリ。デイリークエストに挑戦し、選択式の問題に回答してXPを獲得。レベル、ストリーク、過去クエストの確認機能も。',
+    desc: 'セキュリティニュースを題材に、毎日クエスト形式でサイバーセキュリティを学べる学習アプリ。ログイン後にデイリークエストへ挑戦し、選択式の問題に回答してXPを獲得。レベル、ストリーク、過去クエストの確認機能もあります。',
+    tape: '#FF5D8F',
     image: 'uploads/work_secure_quest.webp',
   },
   {
@@ -117,15 +124,16 @@ const WORKS = [
     title: 'ARG Project',
     tags: ['ARG', 'Web', 'Puzzle'],
     desc: 'Web上で展開する代替現実ゲーム（ARG）。隠しページや暗号を辿りながら物語を解き明かす、体験型の謎解きプロジェクトです。詳細は近日公開。',
+    tape: '#D8F24B',
     locked: true,
   },
 ];
 
 const STRENGTHS = [
-  { name: '課題解決力', en: 'problem_solving', level: 92, desc: '多面的な視点で課題を整理し、技術とデザインを組み合わせて考える力を磨いています。' },
-  { name: '技術力', en: 'technology', level: 88, desc: 'AI・Web開発を中心に、最新技術を素早くキャッチアップし実装できる力があります。' },
-  { name: 'チームワーク', en: 'teamwork', level: 95, desc: 'サッカーで培った協調性とコミュニケーション力で、チームを前進させることができます。' },
-  { name: '継続力', en: 'persistence', level: 97, desc: '目標に向かって粘り強く取り組み、成果を出すことにこだわり続けることができます。' },
+  { icon: 'uploads/45_idea_bulb_icon.png', name: '課題解決力', en: 'Problem Solving', tape: '#FF5D8F', desc: '多面的な視点で課題を整理し、技術とデザインを組み合わせて考える力を磨いています。' },
+  { icon: 'uploads/47_programming_code_icon.png', name: '技術力', en: 'Technology', tape: '#7C5CFF', desc: 'AI・Web開発を中心に、最新技術を素早くキャッチアップし実装できる力があります。' },
+  { icon: 'uploads/48_teamwork_icon.png', name: 'チームワーク', en: 'Teamwork', tape: '#22C1C3', desc: 'サッカーで培った協調性とコミュニケーション力で、チームを前進させることができます。' },
+  { icon: 'uploads/46_goal_growth_target_icon.png', name: '継続力', en: 'Persistence', tape: '#FFB84D', desc: '目標に向かって粘り強く取り組み、成果を出すことにこだわり続けることができます。' },
 ];
 
 const FAQS = [
@@ -135,111 +143,55 @@ const FAQS = [
   { q: '副業やインターンなどについて詳しく教えてください。', a: 'Web制作、アプリ開発、AIツール開発など自身の成長につながるものは幅広くお受けしています。まずはメールまたはSNSでお気軽にご相談ください。' },
 ];
 
-/* ── utilities ──────────────────────────────────── */
+/* ── motion utilities ───────────────────────────── */
 
 function useReveal(deps) {
   useEffect(() => {
     const els = document.querySelectorAll('.r');
     if (REDUCED) { els.forEach(el => el.classList.add('on')); return; }
-    const obs = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); obs.unobserve(e.target); } }), { threshold: 0.06 });
+    const obs = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); obs.unobserve(e.target); } }), { threshold: 0.08 });
     els.forEach(el => obs.observe(el));
     return () => obs.disconnect();
   }, deps);
 }
 
-// types out lines one after another
-function BootLog({ lines, speed = 14, startDelay = 300, onDone }) {
-  const [shown, setShown] = useState(REDUCED ? lines.map(l => l.text) : lines.map(() => ''));
-  const [done, setDone] = useState(REDUCED);
-  const doneSent = useRef(false);
-  useEffect(() => {
-    if (done && !doneSent.current) {
-      doneSent.current = true;
-      onDone && onDone();
-    }
-  }, [done, onDone]);
+// gentle parallax drift for scrapbook decorations
+function useDrift(selector) {
   useEffect(() => {
     if (REDUCED) return;
-    let li = 0, ci = 0, timer;
-    const tick = () => {
-      if (li >= lines.length) { setDone(true); return; }
-      ci += 1 + Math.floor(Math.random() * 2);
-      const text = lines[li].text;
-      setShown(prev => {
-        const next = [...prev];
-        next[li] = text.slice(0, ci);
-        return next;
-      });
-      if (ci >= text.length) { li += 1; ci = 0; timer = setTimeout(tick, 90); }
-      else timer = setTimeout(tick, speed);
-    };
-    timer = setTimeout(tick, startDelay);
-    return () => clearTimeout(timer);
+    const els = gsap.utils.toArray(selector);
+    const tweens = els.map((el, i) => gsap.to(el, {
+      y: (i % 2 === 0 ? -40 : 40),
+      rotation: `+=${i % 2 === 0 ? 6 : -6}`,
+      ease: 'none',
+      scrollTrigger: { trigger: el, start: 'top bottom', end: 'bottom top', scrub: true },
+    }));
+    return () => tweens.forEach(t => { t.scrollTrigger?.kill(); t.kill(); });
   }, []);
-  return (
-    <div className="bootlog">
-      {lines.map((l, i) => (
-        <p key={i} className={`bl-line ${l.cls || ''}`}>
-          {shown[i]}
-          {!done && shown[i] && shown[i].length < l.text.length ? <span className="caret" /> : null}
-        </p>
-      ))}
-    </div>
-  );
 }
 
-// subtle digital rain background
-function Rain() {
+function Magnetic({ children, strength = 0.28 }) {
   const ref = useRef(null);
   useEffect(() => {
-    if (REDUCED) return;
-    const canvas = ref.current;
-    const ctx = canvas.getContext('2d');
-    let w, h, raf, cols, drops;
-    const glyphs = '01アイウエオカキクケコｱｲｳｴｵ+-*/<>{}[]#$%&';
-    const size = 16;
-    const resize = () => {
-      w = canvas.width = window.innerWidth;
-      h = canvas.height = window.innerHeight;
-      cols = Math.floor(w / size);
-      drops = Array.from({ length: cols }, () => Math.random() * -h / size);
+    if (REDUCED || !FINE_POINTER) return;
+    const el = ref.current;
+    if (!el) return;
+    const xTo = gsap.quickTo(el, 'x', { duration: 0.4, ease: 'power3.out' });
+    const yTo = gsap.quickTo(el, 'y', { duration: 0.4, ease: 'power3.out' });
+    const move = e => {
+      const r = el.getBoundingClientRect();
+      xTo((e.clientX - (r.left + r.width / 2)) * strength);
+      yTo((e.clientY - (r.top + r.height / 2)) * strength);
     };
-    resize();
-    window.addEventListener('resize', resize);
-    let last = 0;
-    const tick = t => {
-      raf = requestAnimationFrame(tick);
-      if (t - last < 70) return;
-      last = t;
-      ctx.fillStyle = 'rgba(5, 9, 7, 0.12)';
-      ctx.fillRect(0, 0, w, h);
-      ctx.font = `${size}px monospace`;
-      for (let i = 0; i < cols; i++) {
-        const ch = glyphs[Math.floor(Math.random() * glyphs.length)];
-        ctx.fillStyle = Math.random() < 0.04 ? 'rgba(87,224,255,0.6)' : 'rgba(105,217,138,0.45)';
-        ctx.fillText(ch, i * size, drops[i] * size);
-        if (drops[i] * size > h && Math.random() > 0.975) drops[i] = 0;
-        drops[i] += 1;
-      }
-    };
-    raf = requestAnimationFrame(tick);
-    return () => { cancelAnimationFrame(raf); window.removeEventListener('resize', resize); };
-  }, []);
-  if (REDUCED) return null;
-  return <canvas className="rain" ref={ref} aria-hidden="true" />;
+    const leave = () => { xTo(0); yTo(0); };
+    el.addEventListener('mousemove', move);
+    el.addEventListener('mouseleave', leave);
+    return () => { el.removeEventListener('mousemove', move); el.removeEventListener('mouseleave', leave); };
+  }, [strength]);
+  return <span className="magnet" ref={ref}>{children}</span>;
 }
 
-function Clock() {
-  const [now, setNow] = useState(() => new Date());
-  useEffect(() => {
-    const t = setInterval(() => setNow(new Date()), 1000);
-    return () => clearInterval(t);
-  }, []);
-  const pad = n => String(n).padStart(2, '0');
-  return <span>{pad(now.getHours())}:{pad(now.getMinutes())}:{pad(now.getSeconds())} JST</span>;
-}
-
-function CountUp({ value, duration = 1200 }) {
+function CountUp({ value, duration = 1400 }) {
   const ref = useRef(null);
   const [display, setDisplay] = useState(REDUCED ? value : 0);
   useEffect(() => {
@@ -264,250 +216,323 @@ function CountUp({ value, duration = 1200 }) {
   return <span ref={ref}>{display}</span>;
 }
 
-
-// BIOS-style boot overlay on first access
-function BootScreen({ onDone }) {
-  const LINES = [
-    'RYOS BIOS v3.0.0 — SEKINO RYO SYSTEMS',
-    'CPU: CURIOSITY CORE x2 ......... OK',
-    'MEM: PASSION 640K (OVERCLOCKED) OK',
-    'MOUNT /portfolio ............... OK',
-    'MOUNT /hidden .............. LOCKED',
-    'STARTING SESSION ...',
-  ];
-  const [idx, setIdx] = useState(0);
-  const [leaving, setLeaving] = useState(false);
-  useEffect(() => {
-    if (idx < LINES.length) {
-      const t = setTimeout(() => setIdx(idx + 1), 260 + Math.random() * 220);
-      return () => clearTimeout(t);
-    }
-    const t = setTimeout(() => setLeaving(true), 450);
-    return () => clearTimeout(t);
-  }, [idx]);
-  useEffect(() => {
-    if (!leaving) return;
-    const t = setTimeout(onDone, 550);
-    return () => clearTimeout(t);
-  }, [leaving, onDone]);
-  const skip = () => { setIdx(LINES.length); setLeaving(true); };
-  return (
-    <div className={`boot-screen${leaving ? ' leave' : ''}`} onClick={skip} role="presentation">
-      <div className="boot-inner">
-        {LINES.slice(0, idx).map((l, i) => (
-          <p key={i} className={`boot-line${l.includes('LOCKED') ? ' c-warn' : ''}`}>{l}</p>
-        ))}
-        {idx < LINES.length && <p className="boot-line"><span className="caret" /></p>}
-        <div className="boot-bar" aria-hidden="true"><span style={{ width: `${Math.min(100, idx / LINES.length * 100)}%` }} /></div>
-        <p className="boot-skip">click to skip</p>
-      </div>
-    </div>
-  );
+// a strip of tape
+function Tape({ color = '#FFD23F', className = '', style }) {
+  return <span className={`tape ${className}`} aria-hidden="true" style={{ '--tape': color, ...style }} />;
 }
 
 /* ── chrome ─────────────────────────────────────── */
 
-function TopBar({ active }) {
+function Nav({ active, onNavigate }) {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const go = id => { onNavigate(id); setMenuOpen(false); };
   return (
-    <header className="topbar">
-      <span className="tb-left">RYOS://MYPAGE — v3.0.0</span>
-      <span className="tb-mid">[{active.toUpperCase()}]</span>
-      <span className="tb-right"><span className="tb-dot" />SECURE — <Clock /></span>
-    </header>
+    <>
+      <nav className="nav">
+        <button className="nav-logo" type="button" onClick={() => go('home')}>Ryo<span>.</span>S</button>
+        <div className="nav-links">
+          {NAVS.map(n => (
+            <button key={n} type="button" className={`nav-link${active === n.toLowerCase() ? ' on' : ''}`} onClick={() => go(n.toLowerCase())}>{n}</button>
+          ))}
+        </div>
+        <div className="nav-right">
+          <button className="nav-cta" type="button" onClick={() => go('contact')}>Contact →</button>
+          <button className={`ham${menuOpen ? ' open' : ''}`} type="button" aria-label="Menu" aria-expanded={menuOpen} onClick={() => setMenuOpen(o => !o)}>
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </nav>
+      <div className={`nav-drawer${menuOpen ? ' open' : ''}`}>
+        {NAVS.map(n => <button key={n} type="button" className="nav-link" onClick={() => go(n.toLowerCase())}>{n}</button>)}
+        <button className="nav-cta" type="button" onClick={() => go('contact')}>Contact →</button>
+      </div>
+    </>
   );
 }
 
-
-// command typed out when it scrolls into view
-function TypedCmd({ text, onDone }) {
-  const full = text.length;
-  const [n, setN] = useState(REDUCED ? full : 0);
-  const [started, setStarted] = useState(REDUCED);
-  const doneSent = useRef(false);
-  const ref = useRef(null);
-  useEffect(() => {
-    if (n >= full && !doneSent.current) {
-      doneSent.current = true;
-      const t = setTimeout(() => onDone && onDone(), 180);
-      return () => clearTimeout(t);
-    }
-  }, [n, full, onDone]);
-  useEffect(() => {
-    if (REDUCED) return;
-    const io = new IntersectionObserver(([e]) => {
-      if (e.isIntersecting) { setStarted(true); io.disconnect(); }
-    }, { threshold: 0.6 });
-    if (ref.current) io.observe(ref.current);
-    return () => io.disconnect();
-  }, []);
-  useEffect(() => {
-    if (!started || n >= full) return;
-    const t = setTimeout(() => setN(v => Math.min(full, v + 1 + Math.floor(Math.random() * 2))), 24);
-    return () => clearTimeout(t);
-  }, [started, n, full]);
-  const done = n >= full;
-  return <span ref={ref}>{text.slice(0, n)}{started && !done ? <span className="caret" /> : null}{!started ? '\u00A0' : null}</span>;
-}
-
-// command line at the bottom — the site's controller & hidden-room key
-function CmdBar({ onCommand }) {
-  const [value, setValue] = useState('');
-  const [log, setLog] = useState(null);
-  const inputRef = useRef(null);
-  const logTimer = useRef(null);
-
-  const print = msg => {
-    setLog(msg);
-    if (logTimer.current) clearTimeout(logTimer.current);
-    logTimer.current = setTimeout(() => setLog(null), 5000);
-  };
-
-  const submit = e => {
-    e.preventDefault();
-    const cmd = value.trim().toLowerCase();
-    setValue('');
-    if (!cmd) return;
-    const result = onCommand(cmd);
-    if (result) print(result);
-  };
-
+function SectionTitle({ no, en, jp }) {
   return (
-    <div className="cmdbar">
-      {log && <p className="cmd-log">{log}</p>}
-      <form className="cmd-form" onSubmit={submit} onClick={() => inputRef.current?.focus()}>
-        <span className="cmd-prompt">ryo.s@future:~$</span>
-        <input
-          ref={inputRef}
-          className="cmd-input"
-          value={value}
-          onChange={e => setValue(e.target.value)}
-          placeholder='type "help"'
-          aria-label="command input"
-          autoComplete="off"
-          spellCheck="false"
-        />
-      </form>
+    <div className="sec-head r">
+      <span className="sec-no">{no}</span>
+      <h2 className="sec-title">{en}<span className="dot">.</span></h2>
+      <span className="sec-jp">{jp}</span>
     </div>
   );
 }
 
-// section = an executed command with its output
-function Cmd({ id, cmd, note, children }) {
-  const [typed, setTyped] = useState(REDUCED);
-  const onDone = useCallback(() => setTyped(true), []);
+/* ── hero ───────────────────────────────────────── */
+
+function HeroLogoGate({ onUnlock }) {
+  const gateRef = useRef(null);
+  const visualRef = useRef(null);
+  const orbitRef = useRef(null);
+  const draggingRef = useRef(false);
+  const lastAngleRef = useRef(null);
+  const traceRef = useRef(0);
+  const visualTraceRef = useRef(0);
+  const waterRef = useRef(0);
+  const renderFrameRef = useRef(null);
+  const returnFrameRef = useRef(null);
+  const returningRef = useRef(false);
+  const touchActiveRef = useRef(false);
+  const [opening, setOpening] = useState(false);
+  const [returning, setReturning] = useState(false);
+  const [tracing, setTracing] = useState(false);
+  const unlockAt = 340;
+
+  const paintGate = () => {
+    const progress = Math.min(1, visualTraceRef.current / unlockAt);
+    const waterProgress = Math.min(1, waterRef.current / unlockAt);
+    const el = visualRef.current;
+    if (!el) return;
+    el.style.setProperty('--water-scale', waterProgress);
+    el.style.setProperty('--water-opacity', 0.08 + waterProgress * 0.82);
+    orbitRef.current?.setAttribute('transform', `rotate(${progress * 360} 180 180)`);
+  };
+
+  const runVisualLoop = () => {
+    if (renderFrameRef.current) return;
+    const tick = () => {
+      if (draggingRef.current) {
+        visualTraceRef.current = traceRef.current;
+      } else {
+        const traceDiff = traceRef.current - visualTraceRef.current;
+        visualTraceRef.current += traceDiff * 0.2;
+        if (Math.abs(traceDiff) < 0.05) visualTraceRef.current = traceRef.current;
+      }
+      const waterDiff = visualTraceRef.current - waterRef.current;
+      waterRef.current += waterDiff * 0.075;
+      if (Math.abs(waterDiff) < 0.05) waterRef.current = visualTraceRef.current;
+      paintGate();
+      const stillMoving =
+        draggingRef.current || returningRef.current ||
+        Math.abs(traceRef.current - visualTraceRef.current) > 0.05 ||
+        Math.abs(visualTraceRef.current - waterRef.current) > 0.05;
+      if (stillMoving) renderFrameRef.current = requestAnimationFrame(tick);
+      else renderFrameRef.current = null;
+    };
+    renderFrameRef.current = requestAnimationFrame(tick);
+  };
+
+  useEffect(() => {
+    paintGate();
+    return () => {
+      if (renderFrameRef.current) cancelAnimationFrame(renderFrameRef.current);
+      if (returnFrameRef.current) cancelAnimationFrame(returnFrameRef.current);
+    };
+  }, []);
+
+  const pointFromEvent = e => {
+    const touch = e.touches?.[0] || e.changedTouches?.[0];
+    return touch || e;
+  };
+  const angleFromEvent = e => {
+    const rect = gateRef.current?.getBoundingClientRect();
+    if (!rect) return null;
+    const point = pointFromEvent(e);
+    const x = point.clientX - (rect.left + rect.width / 2);
+    const y = point.clientY - (rect.top + rect.height / 2);
+    return (Math.atan2(y, x) * 180 / Math.PI + 450) % 360;
+  };
+  const applyAngle = angle => {
+    if (angle === null || lastAngleRef.current === null) return;
+    let delta = angle - lastAngleRef.current;
+    if (delta > 180) delta -= 360;
+    if (delta < -180) delta += 360;
+    if (delta > 0) traceRef.current = Math.min(unlockAt, traceRef.current + delta);
+    else traceRef.current = Math.max(0, traceRef.current + delta * 0.35);
+    lastAngleRef.current = angle;
+  };
+  const startTrace = e => {
+    if (opening) return;
+    if (returnFrameRef.current) cancelAnimationFrame(returnFrameRef.current);
+    returnFrameRef.current = null;
+    returningRef.current = false;
+    setReturning(false);
+    setTracing(true);
+    traceRef.current = visualTraceRef.current;
+    draggingRef.current = true;
+    lastAngleRef.current = angleFromEvent(e);
+    if (e.pointerId !== undefined && e.currentTarget.setPointerCapture) e.currentTarget.setPointerCapture(e.pointerId);
+  };
+  const moveTrace = e => {
+    if (!draggingRef.current) return;
+    const nativeEvents = e.nativeEvent?.getCoalescedEvents?.() || [e.nativeEvent || e];
+    nativeEvents.forEach(ev => applyAngle(angleFromEvent(ev)));
+    runVisualLoop();
+    if (traceRef.current >= unlockAt) {
+      draggingRef.current = false;
+      traceRef.current = unlockAt; visualTraceRef.current = unlockAt; waterRef.current = unlockAt;
+      paintGate();
+      orbitRef.current?.setAttribute('transform', 'rotate(380 180 180)');
+      setTracing(false); setOpening(true);
+      window.setTimeout(onUnlock, 520);
+    }
+  };
+  const returnDial = () => {
+    const startTraceValue = traceRef.current;
+    const startWaterValue = waterRef.current;
+    const duration = 1150 + Math.min(1, startTraceValue / unlockAt) * 650;
+    const startedAt = performance.now();
+    returningRef.current = true; setReturning(true); setTracing(false);
+    const animate = time => {
+      const t = Math.min(1, (time - startedAt) / duration);
+      const eased = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+      const remaining = 1 - eased;
+      traceRef.current = startTraceValue * remaining;
+      waterRef.current = startWaterValue * remaining;
+      runVisualLoop();
+      if (t < 1) returnFrameRef.current = requestAnimationFrame(animate);
+      else {
+        traceRef.current = 0; visualTraceRef.current = 0; waterRef.current = 0;
+        returnFrameRef.current = null; returningRef.current = false;
+        paintGate(); setReturning(false);
+      }
+    };
+    returnFrameRef.current = requestAnimationFrame(animate);
+  };
+  const endTrace = e => {
+    draggingRef.current = false; lastAngleRef.current = null;
+    if (e.pointerId !== undefined && e.currentTarget.releasePointerCapture) e.currentTarget.releasePointerCapture(e.pointerId);
+    if (!opening && traceRef.current < unlockAt) returnDial();
+  };
+  const hpStart = e => { if (touchActiveRef.current) return; startTrace(e); };
+  const hpMove = e => { if (touchActiveRef.current) return; moveTrace(e); };
+  const hpEnd = e => { if (touchActiveRef.current) return; endTrace(e); };
+  const htStart = e => { touchActiveRef.current = true; e.preventDefault(); startTrace(e); };
+  const htMove = e => { e.preventDefault(); moveTrace(e); };
+  const htEnd = e => { endTrace(e); window.setTimeout(() => { touchActiveRef.current = false; }, 350); };
+  const hmStart = e => { if (window.PointerEvent || touchActiveRef.current) return; startTrace(e); };
+  const hmMove = e => { if (window.PointerEvent || touchActiveRef.current) return; moveTrace(e); };
+  const hmEnd = e => { if (window.PointerEvent || touchActiveRef.current) return; endTrace(e); };
+
   return (
-    <section id={id} className={`cmd-sec${typed ? ' typed' : ''}`} data-label={id}>
-      <div className="w">
-        <p className="sec-prompt"><span className="p1">ryo.s@future</span><span className="p2">:~$</span> <TypedCmd text={cmd} onDone={onDone} />{note && typed && <span className="p-note">  # {note}</span>}</p>
-        <div className="sec-out">{children}</div>
+    <div className="hero-gate r d3">
+      <button
+        className={`logo-emblem${tracing ? ' tracing' : ''}${opening ? ' opening' : ''}${returning ? ' returning' : ''}`}
+        type="button" ref={gateRef} aria-label="Circular logo entrance to hobbies"
+        onPointerDown={hpStart} onPointerMove={hpMove} onPointerUp={hpEnd} onPointerCancel={hpEnd} onPointerLeave={hpEnd}
+        onMouseDown={hmStart} onMouseMove={hmMove} onMouseUp={hmEnd} onMouseLeave={hmEnd}
+        onTouchStart={htStart} onTouchMove={htMove} onTouchEnd={htEnd} onTouchCancel={htEnd}
+      >
+        <span className="logo-visual" ref={visualRef}>
+          <span className="logo-water" aria-hidden="true"><span className="water-wave wave-a"></span><span className="water-wave wave-b"></span></span>
+          <svg className="logo-orbit" viewBox="0 0 360 360" aria-hidden="true">
+            <defs>
+              <path id="heroTopArc" d="M 54 181 A 126 126 0 0 1 306 181" />
+              <path id="heroBottomArc" d="M 306 181 A 126 126 0 0 1 54 181" />
+            </defs>
+            <circle className="orbit-guide" cx="180" cy="180" r="142" />
+            <g className="orbit-copy" ref={orbitRef}>
+              <text className="orbit-text orbit-top"><textPath href="#heroTopArc" xlinkHref="#heroTopArc" startOffset="50%" textAnchor="middle">Solve Tiny, Impact Daily.</textPath></text>
+              <text className="orbit-text orbit-bottom"><textPath href="#heroBottomArc" xlinkHref="#heroBottomArc" startOffset="50%" textAnchor="middle">Build Smarter with AI.</textPath></text>
+              <circle className="orbit-dot" cx="42" cy="180" r="5" />
+              <circle className="orbit-dot" cx="318" cy="180" r="5" />
+            </g>
+            <g className="center-mark">
+              <path d="M145 151 L181 143" />
+              <path d="M145 151 L145 209 L180 224 L214 215 L214 189" />
+              <rect x="183" y="162" width="18" height="18" rx="1.5" />
+              <rect x="216" y="130" width="20" height="20" rx="1.5" />
+              <rect className="pixel-accent" x="208" y="169" width="18" height="18" rx="1.5" />
+              <rect className="pixel-accent soft" x="194" y="195" width="18" height="18" rx="1.5" />
+            </g>
+          </svg>
+        </span>
+        <span className="gate-hint" aria-hidden="true">turn me ↻</span>
+      </button>
+    </div>
+  );
+}
+
+function Hero({ onSecretOpen }) {
+  return (
+    <section id="home" className="hero" data-label="Hero">
+      <span className="paper-scrap s1" aria-hidden="true"></span>
+      <span className="paper-scrap s2" aria-hidden="true"></span>
+      <span className="doodle d-star" aria-hidden="true">✳</span>
+      <span className="doodle d-spring" aria-hidden="true">
+        <svg viewBox="0 0 120 40"><path d="M4 20 C 20 -6, 40 46, 56 20 S 92 -6, 116 20" /></svg>
+      </span>
+      <div className="hero-grid">
+        <div className="hero-copy">
+          <span className="hero-badge r">
+            <Tape color="#FF5D8F" className="t-badge" />👋 電気通信大学 情報理工学部 4年 — 関野 凌
+          </span>
+          <h1 className="hero-title r d1">Engineering<br /><span className="hl">The Future<span className="dot">.</span></span></h1>
+          <p className="hero-lead r d2">テクノロジーで、日常の「あったらいいな」をカタチにする。AIを活用して、人の役に立つプロダクトを生み出すことに情熱を注いでいます。</p>
+          <div className="hero-btns r d2">
+            <Magnetic><button className="btn-p" onClick={() => scrollToEl(document.getElementById('about'))}>About Me →</button></Magnetic>
+            <Magnetic><button className="btn-s" onClick={() => scrollToEl(document.getElementById('works'))}>View Works</button></Magnetic>
+          </div>
+        </div>
+        <div className="hero-side">
+          <HeroLogoGate onUnlock={onSecretOpen} />
+          <span className="polaroid-note r d3">切って、貼って、また挑む。<br /><b>Keep Challenging.</b></span>
+        </div>
       </div>
+      <div className="scroll-cue" aria-hidden="true">scroll ↓</div>
     </section>
   );
 }
 
-/* ── sections ───────────────────────────────────── */
-
-const ASCII_LOGO = String.raw`
-██████╗ ██╗   ██╗ ██████╗    ███████╗
-██╔══██╗╚██╗ ██╔╝██╔═══██╗   ██╔════╝
-██████╔╝ ╚████╔╝ ██║   ██║   ███████╗
-██╔══██╗  ╚██╔╝  ██║   ██║   ╚════██║
-██║  ██║   ██║   ╚██████╔╝██╗███████║
-╚═╝  ╚═╝   ╚═╝    ╚═════╝ ╚═╝╚══════╝`;
-
-function Hero({ onNav }) {
-  const [typed, setTyped] = useState(REDUCED);
-  const onDone = useCallback(() => setTyped(true), []);
-  return (
-    <section id="home" className={`hero${typed ? ' typed' : ''}`} data-label="home">
-      <div className="w">
-        <BootLog onDone={onDone} lines={[
-          { text: 'ryo.s@future:~$ boot portfolio --fresh --fluid', cls: 'c-cmd' },
-          { text: '[ OK ] loading modules... ai / web / security', cls: 'c-ok' },
-          { text: '[ OK ] whitehat_contest.award found (x1)', cls: 'c-ok' },
-          { text: '[WARN] hidden_room detected — passphrase required. hint: try "unlock"', cls: 'c-warn' },
-        ]} />
-        <pre className="ascii r d1" aria-hidden="true">{ASCII_LOGO}</pre>
-        <h1 className="hero-title r d1">ENGINEERING<br /><span className="ht-glow">THE FUTURE_<span className="caret big" /></span></h1>
-        <p className="hero-jp r d2">// テクノロジーで、日常の「あったらいいな」をカタチにする。</p>
-        <p className="hero-jp sub r d2">// 電気通信大学 情報理工学部 4年 — 関野 凌。AIを活用して、人の役に立つプロダクトを生み出すことに情熱を注いでいます。</p>
-        <nav className="hero-menu r d3" aria-label="section menu">
-          {[
-            ['01', 'about', 'whoami'],
-            ['02', 'works', 'ls ./works'],
-            ['03', 'strengths', 'cat skills.log'],
-            ['04', 'achievements', './stats --summary'],
-            ['05', 'faq', 'man ryo.s'],
-            ['06', 'contact', 'ssh ryo.s@future'],
-          ].map(([no, id, c]) => (
-            <button key={id} type="button" className="menu-row" onClick={() => onNav(id)}>
-              <span className="m-no">{no}</span>
-              <span className="m-id">{id.toUpperCase()}</span>
-              <span className="m-cmd">{c}</span>
-              <span className="m-arrow">→</span>
-            </button>
-          ))}
-        </nav>
-        <p className="hero-status r d4">[SYSTEM STATUS: <b>CHALLENGING</b>] — never settle, keep shipping.</p>
-      </div>
-    </section>
-  );
-}
+/* ── about ──────────────────────────────────────── */
 
 function About() {
   return (
-    <Cmd id="about" cmd="whoami --verbose" note="自己紹介">
-      <div className="about-grid">
-        <div className="r d1">
-          <table className="kv">
-            <tbody>
-              {[
-                ['name', '関野 凌 (Ryo Sekino)'],
-                ['university', '電気通信大学 情報理工学部'],
-                ['grade', '4年生'],
-                ['hometown', '神奈川県'],
-                ['focus', 'AI × Web プロダクト開発'],
-              ].map(([k, v]) => (
-                <tr key={k}><td className="kv-k">{k}</td><td className="kv-s">:</td><td className="kv-v">{v}</td></tr>
+    <section id="about" className="sec sec-about" data-label="About">
+      <div className="w">
+        <SectionTitle no="01" en="About" jp="自己紹介" />
+        <div className="about-grid">
+          <figure className="polaroid r d1">
+            <Tape color="#7FD0FF" className="t-tl" />
+            <div className="polaroid-img"><img src="uploads/03_about_image_blob_mask.webp" alt="関野凌のポートレート" loading="lazy" /></div>
+            <figcaption>Ryo Sekino — 2026</figcaption>
+          </figure>
+          <div className="about-body r d1">
+            <div className="note-card">
+              <p>電気通信大学に通う4年生。小学校から高校までサッカーに取り組み、チームで上を目指すことを学びました。</p>
+              <p>現在はAIやWebを活用したプロダクト開発を中心に、人の役に立つ「あったらいいな」を創造することを目指して取り組んでいます。</p>
+            </div>
+            <ul className="fact-list">
+              {[['Name', '関野 凌 / Ryo Sekino'], ['University', '電気通信大学 情報理工学部'], ['Grade', '4年生'], ['Hometown', '神奈川県'], ['Focus', 'AI × Web プロダクト開発']].map(([k, v]) => (
+                <li key={k}><span className="fk">{k}</span><span className="fv">{v}</span></li>
               ))}
-            </tbody>
-          </table>
-          <div className="about-log">
-            <p><span className="c-ok">[ OK ]</span> 小学校から高校までサッカー。チームで上を目指すことを学ぶ。</p>
-            <p><span className="c-ok">[ OK ]</span> 現在はAIやWebを活用したプロダクト開発が中心。</p>
-            <p><span className="c-run">[RUN ]</span> 人の役に立つ「あったらいいな」を創造中...</p>
+            </ul>
+            <a className="text-link" href="#contact" onClick={e => { e.preventDefault(); scrollToEl(document.getElementById('contact')); }}>もっと詳しく ↗</a>
           </div>
         </div>
-        <pre className="about-ascii r d2" aria-hidden="true">{`+----------------------+
-|  > profile.img       |
-|  [rendering skipped] |
-|  text-mode only      |
-+----------------------+`}</pre>
       </div>
-    </Cmd>
+    </section>
   );
 }
 
-function WorkRow({ work, index }) {
+/* ── works ──────────────────────────────────────── */
+
+function WorkCard({ work, i }) {
   const url = work.url || work.image;
   const Tag = url ? 'a' : 'div';
+  const [failed, setFailed] = useState(false);
+  const showImg = work.image && !failed;
   return (
     <Tag
-      className={`work-row r${work.locked ? ' locked' : ''}`}
+      className={`work-card r${work.locked ? ' locked' : ''}`}
       href={url}
       target={work.url ? '_blank' : undefined}
       rel={work.url ? 'noopener noreferrer' : undefined}
-      style={{ transitionDelay: `${index * 0.18}s` }}
+      style={{ '--tape': work.tape, transitionDelay: `${(i % 3) * 0.08}s` }}
     >
-      <div className="wr-head">
-        <span className="wr-perm">{work.locked ? '-r--------' : 'drwxr-xr-x'}</span>
-        <span className="wr-no">{String(index + 1).padStart(2, '0')}</span>
-        <span className="wr-name">{work.title}{work.jp ? ` — ${work.jp}` : ''}</span>
-        <span className="wr-open">{work.locked ? '[LOCKED]' : url ? '[OPEN →]' : '[IMG]'}</span>
+      <Tape color={work.tape} className="t-card" />
+      <div className="wc-thumb">
+        {showImg
+          ? <img src={work.image} alt={`${work.title} screenshot`} loading="lazy" onError={() => setFailed(true)} />
+          : <div className="wc-ph"><span></span>{work.locked ? '🔒 Coming soon' : work.title}</div>}
       </div>
-      <div className="wr-body">
-        <p className="wr-tags">{work.tags.map(t => `[${t}]`).join(' ')}</p>
-        <p className="wr-desc">{work.desc}</p>
+      <div className="wc-body">
+        <div className="wc-tags">{work.tags.map(t => <span key={t} className="chip">{t}</span>)}</div>
+        <h3 className="wc-title">{work.title}</h3>
+        <p className="wc-desc">{work.desc}</p>
+        {url && <span className="wc-open">{work.locked ? '準備中' : '開く →'}</span>}
       </div>
     </Tag>
   );
@@ -515,88 +540,97 @@ function WorkRow({ work, index }) {
 
 function Works() {
   return (
-    <Cmd id="works" cmd="ls ./works --detail" note="制作実績">
-      <p className="out-line r">total {WORKS.length} projects — AIやWeb技術を活かしたプロダクトを個人開発中心に制作しています。</p>
-      <div className="work-list">
-        {WORKS.map((w, i) => <WorkRow key={w.title} work={w} index={i} />)}
+    <section id="works" className="sec sec-works" data-label="Works">
+      <div className="w">
+        <SectionTitle no="02" en="Works" jp="制作実績" />
+        <p className="sec-intro r d1">個人開発を中心に、AIやWeb技術を活かしたプロダクトを制作しています。ユーザー視点を大切に、シンプルで価値あるものを目指しています。</p>
+        <div className="work-grid">
+          {WORKS.map((w, i) => <WorkCard key={w.title} work={w} i={i} />)}
+        </div>
       </div>
-    </Cmd>
+    </section>
   );
 }
 
+/* ── strengths ──────────────────────────────────── */
+
 function Strengths() {
-  const [fired, setFired] = useState(REDUCED);
-  const ref = useRef(null);
-  useEffect(() => {
-    if (REDUCED) return;
-    const io = new IntersectionObserver(([e]) => {
-      if (e.isIntersecting) { setFired(true); io.disconnect(); }
-    }, { threshold: 0.3 });
-    if (ref.current) io.observe(ref.current);
-    return () => io.disconnect();
-  }, []);
   return (
-    <Cmd id="strengths" cmd="cat skills.log" note="強み">
-      <div className="skill-list" ref={ref}>
-        {STRENGTHS.map((s, i) => (
-          <div key={s.en} className="skill r" style={{ transitionDelay: `${i * 0.18}s` }}>
-            <div className="sk-head">
-              <span className="sk-en">{s.en}</span>
-              <span className="sk-jp">{s.name}</span>
-              <span className="sk-pct">{s.level}%</span>
+    <section id="strengths" className="sec sec-strengths" data-label="Strengths">
+      <span className="doodle d-star2" aria-hidden="true">✳</span>
+      <div className="w">
+        <SectionTitle no="03" en="Strengths" jp="強み" />
+        <p className="sec-intro r d1">専門知識と技術開発力、そしてチームでのコミュニケーション力を活かして、困難なプロジェクトを前進させます。</p>
+        <div className="str-grid">
+          {STRENGTHS.map((s, i) => (
+            <div key={s.en} className="str-card r" style={{ '--tape': s.tape, transitionDelay: `${(i % 2) * 0.08}s` }}>
+              <Tape color={s.tape} className="t-str" />
+              <img className="str-icon" src={s.icon} alt="" loading="lazy" />
+              <span className="str-en">{s.en}</span>
+              <h3 className="str-name">{s.name}</h3>
+              <p className="str-desc">{s.desc}</p>
             </div>
-            <div className="sk-bar" aria-hidden="true">
-              <span className="sk-fill" style={{ width: fired ? `${s.level}%` : '0%', transitionDelay: `${0.2 + i * 0.12}s` }} />
-            </div>
-            <p className="sk-desc">{s.desc}</p>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-    </Cmd>
+    </section>
   );
 }
+
+/* ── achievements ───────────────────────────────── */
 
 function Achievements() {
   const stats = [
-    { label: 'whitehat_contest.award', jp: 'ホワイトハッカーコンテスト入賞', value: 1, unit: '回' },
-    { label: 'projects.count', jp: '個人プロジェクト開発数', value: 7, unit: '+' },
-    { label: 'production.deploys', jp: '実環境実装実績', value: 1, unit: '件' },
-    { label: 'ai_driven.years', jp: 'AI駆動開発歴', value: 1, unit: '年' },
+    { icon: 'uploads/47_programming_code_icon.png', label: 'ホワイトハッカーコンテスト入賞', value: 1, unit: '回', tape: '#FF5D8F' },
+    { icon: 'uploads/50_development_laptop_icon.png', label: '個人プロジェクト開発数', value: 7, unit: '+', tape: '#7C5CFF' },
+    { icon: 'uploads/48_teamwork_icon.png', label: '実環境実装実績', value: 1, unit: '件', tape: '#22C1C3' },
+    { icon: 'uploads/51_ai_development_icon.png', label: 'AI駆動開発歴', value: 1, unit: '年', tape: '#FFB84D' },
   ];
   return (
-    <Cmd id="achievements" cmd="./stats --summary" note="実績">
-      <div className="stat-grid">
-        {stats.map((s, i) => (
-          <div key={s.label} className="stat r" style={{ transitionDelay: `${i * 0.15}s` }}>
-            <p className="st-label">$ {s.label}</p>
-            <p className="st-val"><CountUp value={s.value} /><span className="st-unit">{s.unit}</span></p>
-            <p className="st-jp">{s.jp}</p>
-          </div>
-        ))}
+    <section id="achievements" className="sec sec-ach" data-label="Achievements">
+      <div className="w">
+        <SectionTitle no="04" en="Achievements" jp="実績" />
+        <div className="ach-grid">
+          {stats.map((s, i) => (
+            <div key={i} className="ach-card r" style={{ '--tape': s.tape, transitionDelay: `${(i % 4) * 0.07}s` }}>
+              <Tape color={s.tape} className="t-ach" />
+              <img className="ach-icon" src={s.icon} alt="" loading="lazy" />
+              <div className="ach-val"><CountUp value={s.value} /><span className="ach-unit">{s.unit}</span></div>
+              <div className="ach-label">{s.label}</div>
+            </div>
+          ))}
+        </div>
       </div>
-    </Cmd>
+    </section>
   );
 }
+
+/* ── faq ────────────────────────────────────────── */
 
 function FAQ() {
   const [open, setOpen] = useState(null);
   return (
-    <Cmd id="faq" cmd="man ryo.s | grep -A1 FAQ" note="よくある質問">
-      <div className="faq-list r d1">
-        {FAQS.map((f, i) => (
-          <div key={i} className={`faq-item${open === i ? ' open' : ''}`}>
-            <button type="button" className="faq-q" aria-expanded={open === i} onClick={() => setOpen(open === i ? null : i)}>
-              <span className="fq-mark">{open === i ? 'v' : '>'}</span>
-              <span className="fq-no">Q{i + 1}.</span>
-              <span className="fq-t">{f.q}</span>
-            </button>
-            <div className="faq-a-wrap"><p className="faq-a">A. {f.a}</p></div>
-          </div>
-        ))}
+    <section id="faq" className="sec sec-faq" data-label="FAQ">
+      <div className="w">
+        <SectionTitle no="05" en="FAQ" jp="よくある質問" />
+        <div className="faq-list r d1">
+          {FAQS.map((f, i) => (
+            <div key={i} className={`faq-item${open === i ? ' open' : ''}`}>
+              <button type="button" className="faq-q" aria-expanded={open === i} onClick={() => setOpen(open === i ? null : i)}>
+                <span className="faq-qmark">Q</span>
+                <span className="faq-qt">{f.q}</span>
+                <span className="faq-tog" aria-hidden="true">+</span>
+              </button>
+              <div className="faq-a-wrap"><div className="faq-a"><span className="faq-amark">A</span>{f.a}</div></div>
+            </div>
+          ))}
+        </div>
       </div>
-    </Cmd>
+    </section>
   );
 }
+
+/* ── contact ────────────────────────────────────── */
 
 function Contact() {
   const [form, setForm] = useState({ name: '', email: '', msg: '' });
@@ -605,83 +639,89 @@ function Contact() {
     e.preventDefault();
     const subject = encodeURIComponent(`Portfolio inquiry from ${form.name}`);
     const body = encodeURIComponent(`Name: ${form.name}\nEmail: ${form.email}\n\n${form.msg}`);
-    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=ry0.s3k1n0@gmail.com&su=${subject}&body=${body}`;
-    window.open(gmailUrl, '_blank', 'noopener,noreferrer');
+    window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=ry0.s3k1n0@gmail.com&su=${subject}&body=${body}`, '_blank', 'noopener,noreferrer');
     setSent(true);
     setTimeout(() => setSent(false), 3000);
     setForm({ name: '', email: '', msg: '' });
   };
   return (
-    <Cmd id="contact" cmd="ssh ryo.s@future" note="お問い合わせ">
-      <p className="out-line r">Connecting... <span className="c-ok">connection established.</span> お仕事の依頼・ご相談など、お気軽にどうぞ。送信でメール作成画面が開きます。</p>
-      <h2 className="contact-giant r d1">LET'S CREATE<br /><span className="ht-glow">THE FUTURE_</span></h2>
-      <div className="contact-grid">
-        <div className="r d2">
-          <div className="link-rows">
-            <a className="link-row" href="mailto:ry0.s3k1n0@gmail.com"><span className="lr-cmd">$ mail</span><span>ry0.s3k1n0@gmail.com</span></a>
-            <a className="link-row" href="https://github.com/Nomex2" target="_blank" rel="noopener noreferrer"><span className="lr-cmd">$ git</span><span>github.com/Nomex2</span></a>
-            <a className="link-row" href="https://x.com/Ryo_Sekino" target="_blank" rel="noopener noreferrer"><span className="lr-cmd">$ x</span><span>@Ryo_Sekino</span></a>
-            <a className="link-row" href="https://www.instagram.com/nome_x2/" target="_blank" rel="noopener noreferrer"><span className="lr-cmd">$ ig</span><span>@nome_x2</span></a>
+    <section id="contact" className="sec sec-contact" data-label="Contact">
+      <span className="doodle d-spring2" aria-hidden="true">
+        <svg viewBox="0 0 120 40"><path d="M4 20 C 20 -6, 40 46, 56 20 S 92 -6, 116 20" /></svg>
+      </span>
+      <div className="w">
+        <div className="contact-card r">
+          <Tape color="#FFD23F" className="t-ctop" />
+          <div className="contact-grid">
+            <div>
+              <h2 className="contact-title">Let's Create<br /><span className="hl">Together<span className="dot">.</span></span></h2>
+              <p className="contact-lead">お仕事の依頼・ご相談など、お気軽にご連絡ください。送信ボタンでメール作成画面が開きます。</p>
+              <div className="contact-links">
+                <a href="mailto:ry0.s3k1n0@gmail.com" className="c-link"><span>✉️</span>ry0.s3k1n0@gmail.com</a>
+                <a href="https://github.com/Nomex2" target="_blank" rel="noopener noreferrer" className="c-link"><span>💻</span>github.com/Nomex2</a>
+                <a href="https://x.com/Ryo_Sekino" target="_blank" rel="noopener noreferrer" className="c-link"><span>🐦</span>@Ryo_Sekino</a>
+                <a href="https://www.instagram.com/nome_x2/" target="_blank" rel="noopener noreferrer" className="c-link"><span>📷</span>@nome_x2</a>
+              </div>
+            </div>
+            <form className="c-form" onSubmit={submit}>
+              <input className="c-input" placeholder="お名前" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} required />
+              <input className="c-input" type="email" placeholder="メールアドレス" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} required />
+              <textarea className="c-input" rows={4} placeholder="メッセージ" value={form.msg} onChange={e => setForm({ ...form, msg: e.target.value })} required></textarea>
+              <button type="submit" className="c-submit">{sent ? '送信画面を開きました ✓' : 'Send Message →'}</button>
+            </form>
           </div>
         </div>
-        <form className="c-form r d3" onSubmit={submit}>
-          <label className="c-field"><span>name:</span><input value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} required /></label>
-          <label className="c-field"><span>email:</span><input type="email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} required /></label>
-          <label className="c-field ta"><span>message:</span><textarea rows={5} value={form.msg} onChange={e => setForm({ ...form, msg: e.target.value })} required /></label>
-          <button type="submit" className="c-submit">{sent ? '[ OK ] メール画面を開きました' : '[ SEND MESSAGE → ]'}</button>
-        </form>
       </div>
-    </Cmd>
+    </section>
   );
 }
 
+/* ── hobbies (hidden) ───────────────────────────── */
+
 function HobbiesPage({ onBack }) {
-  const [typed, setTyped] = useState(REDUCED);
-  const onDone = useCallback(() => setTyped(true), []);
   return (
     <main className="hobby-page">
-      <section className={`cmd-sec${typed ? ' typed' : ''}`} data-label="hobbies">
+      <section className="sec sec-hobby-hero" data-label="Hobbies">
+        <span className="doodle d-star" aria-hidden="true">✳</span>
         <div className="w">
-          <BootLog onDone={onDone} lines={[
-            { text: 'ryo.s@future:~$ unlock', cls: 'c-cmd' },
-            { text: 'verifying passphrase... ACCESS GRANTED.', cls: 'c-ok' },
-            { text: 'mounting /hidden/hobbies ... done. ようこそ、隠し部屋へ。', cls: 'c-warn' },
-          ]} speed={12} startDelay={200} />
-          <h1 className="hero-title r d1">HIDDEN ROOM<span className="ht-glow">_</span></h1>
-          <p className="hero-jp r d2">// 技術の外側にある好きなことも、ものづくりの感性を育ててくれています。</p>
-          <button type="button" className="back-btn r d2" onClick={() => onBack('home')}>[ ← exit — back to home ]</button>
-
-          <p className="sec-prompt r d2" style={{ marginTop: '70px' }}><span className="p1">ryo.s@future</span><span className="p2">:/hidden$</span> ls ./hobbies</p>
+          <span className="hero-badge r"><Tape color="#D8F24B" className="t-badge" />🔓 Secret room unlocked</span>
+          <h1 className="hero-title r d1">Hobbies<span className="dot">.</span></h1>
+          <p className="hero-lead r d2">技術の外側にある好きなことも、ものづくりの感性を育ててくれています。</p>
+          <div className="hero-btns r d2">
+            <Magnetic><button className="btn-p" onClick={() => onBack('home')}>← Back Home</button></Magnetic>
+            <Magnetic><button className="btn-s" onClick={() => scrollToEl(document.getElementById('hobby-list'))}>Explore →</button></Magnetic>
+          </div>
+        </div>
+      </section>
+      <section id="hobby-list" className="sec sec-works">
+        <div className="w">
+          <SectionTitle no="★" en="What I Like" jp="好きなこと" />
           <div className="hobby-grid">
-            {HOBBIES.map((hobby, index) => (
-              <article className="hobby-card r" key={hobby.name} style={{ transitionDelay: `${index * 0.15}s` }}>
-                <div className="hb-head">
-                  <span className="hb-dir">drwx------</span>
-                  <span className="hb-no">0{index + 1}</span>
-                </div>
-                <p className="hb-kana">{hobby.kana}</p>
-                <h3>{hobby.name}</h3>
-                <p className="hb-body">{hobby.body}</p>
-                <p className="hb-note">{hobby.note}</p>
+            {HOBBIES.map((h, i) => (
+              <article className="hobby-card r" key={h.name} style={{ '--tape': h.tape, transitionDelay: `${(i % 3) * 0.08}s` }}>
+                <Tape color={h.tape} className="t-card" />
+                <div className="hb-head"><img src={h.icon} alt="" className="hb-icon" loading="lazy" /><span className="hb-kana">{h.kana}</span></div>
+                <h3 className="wc-title">{h.name}</h3>
+                <p className="wc-desc">{h.body}</p>
+                <p className="hb-note">{h.note}</p>
               </article>
             ))}
           </div>
-
-          <p className="sec-prompt r" style={{ marginTop: '80px' }}><span className="p1">ryo.s@future</span><span className="p2">:/hidden$</span> top -g <span className="p-note">  # 現実で活きる要素があるゲームたち</span></p>
-          <div className="game-list">
-            {FEATURED_GAMES.map((game, index) => (
-              <a className="game-row r" key={game.name} href={game.url} target="_blank" rel="noopener noreferrer" style={{ transitionDelay: `${index * 0.12}s` }}>
-                <span className="gm-no">PID {1000 + index}</span>
-                <span className="gm-name">{game.name}</span>
-                <span className="gm-label">{game.label}</span>
-                <span className="gm-note">{game.note}</span>
-                <span className="gm-open">[→]</span>
+        </div>
+      </section>
+      <section className="sec sec-strengths">
+        <div className="w">
+          <SectionTitle no="★" en="Games" jp="ゲーム" />
+          <p className="sec-intro r d1">どのゲームも一辺倒で応用の利かないものではなく、現実で活きる要素を持っているため今も愛好しています。</p>
+          <div className="game-grid">
+            {FEATURED_GAMES.map((g, i) => (
+              <a className="game-card r" key={g.name} href={g.url} target="_blank" rel="noopener noreferrer" style={{ transitionDelay: `${(i % 5) * 0.06}s` }}>
+                <div className="gc-head"><img src={g.icon} alt="" className="gc-icon" loading="lazy" /><span className="gc-no">{String(i + 1).padStart(2, '0')}</span></div>
+                <span className="gc-label">{g.label}</span>
+                <h3 className="gc-name">{g.name}</h3>
+                <p className="gc-body">{g.body}</p>
+                <p className="hb-note">{g.note}</p>
               </a>
-            ))}
-          </div>
-          <div className="game-detail r">
-            {FEATURED_GAMES.map(g => (
-              <p key={g.name}><span className="c-ok">{g.name}:</span> {g.body}</p>
             ))}
           </div>
         </div>
@@ -695,29 +735,25 @@ function HobbiesPage({ onBack }) {
 function App() {
   const [active, setActive] = useState('home');
   const [view, setView] = useState(window.location.hash === '#hobbies' ? 'hobbies' : 'main');
-  const [booted, setBooted] = useState(REDUCED);
   useReveal([view]);
+  useDrift('.paper-scrap, .doodle');
 
   useEffect(() => {
     if (REDUCED) return;
-    lenis = new Lenis({ autoRaf: false, lerp: 0.12 });
+    lenis = new Lenis({ autoRaf: false, lerp: 0.11 });
     lenis.on('scroll', ScrollTrigger.update);
     const raf = time => lenis.raf(time * 1000);
     gsap.ticker.add(raf);
     gsap.ticker.lagSmoothing(0);
-    return () => {
-      gsap.ticker.remove(raf);
-      lenis.destroy();
-      lenis = null;
-    };
+    return () => { gsap.ticker.remove(raf); lenis.destroy(); lenis = null; };
   }, []);
 
   useEffect(() => {
     if (view === 'hobbies') { setActive('hobbies'); return undefined; }
-    const obs = new IntersectionObserver(es => {
-      es.forEach(e => { if (e.isIntersecting) setActive(e.target.id); });
-    }, { rootMargin: '-45% 0px -45% 0px', threshold: 0 });
-    SECTIONS.forEach(id => { const el = document.getElementById(id); if (el) obs.observe(el); });
+    const ids = [...NAVS.map(s => s.toLowerCase()), 'contact'];
+    const obs = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) setActive(e.target.id); }), { rootMargin: '-45% 0px -45% 0px', threshold: 0 });
+    ids.forEach(id => { const el = document.getElementById(id); if (el) obs.observe(el); });
+    ScrollTrigger.refresh();
     return () => obs.disconnect();
   }, [view]);
 
@@ -725,18 +761,13 @@ function App() {
     const syncHash = () => setView(window.location.hash === '#hobbies' ? 'hobbies' : 'main');
     window.addEventListener('hashchange', syncHash);
     window.addEventListener('popstate', syncHash);
-    return () => {
-      window.removeEventListener('hashchange', syncHash);
-      window.removeEventListener('popstate', syncHash);
-    };
+    return () => { window.removeEventListener('hashchange', syncHash); window.removeEventListener('popstate', syncHash); };
   }, []);
 
   const openHobbies = useCallback(() => {
-    setView('hobbies');
-    setActive('hobbies');
+    setView('hobbies'); setActive('hobbies');
     if (window.location.hash !== '#hobbies') window.history.pushState(null, '', '#hobbies');
-    if (lenis) lenis.scrollTo(0, { immediate: true });
-    else window.scrollTo({ top: 0 });
+    if (lenis) lenis.scrollTo(0, { immediate: true }); else window.scrollTo({ top: 0 });
   }, []);
 
   const navigateSection = useCallback(id => {
@@ -749,62 +780,31 @@ function App() {
     scrollToEl(document.getElementById(id));
   }, []);
 
-  const handleCommand = useCallback(cmd => {
-    const [head] = cmd.split(/\s+/);
-    if (head === 'help' || head === '?') {
-      return 'commands: about / works / strengths / achievements / faq / contact / home / unlock / exit';
-    }
-    if (head === 'unlock' || head === 'sudo') {
-      openHobbies();
-      return 'ACCESS GRANTED — welcome to the hidden room.';
-    }
-    if (head === 'exit' || head === 'logout' || head === 'q') {
-      navigateSection('home');
-      return 'bye. (returned to home)';
-    }
-    if (head === 'home' || head === 'top' || head === 'clear' || head === 'cd') {
-      navigateSection('home');
-      return null;
-    }
-    if (head === 'hobbies' || head === 'hidden') {
-      return 'permission denied. hint: try "unlock"';
-    }
-    if (SECTIONS.includes(head)) {
-      navigateSection(head);
-      return null;
-    }
-    if (head === 'whoami') { navigateSection('about'); return null; }
-    if (head === 'ls') { navigateSection('works'); return null; }
-    if (head === 'ssh' || head === 'mail') { navigateSection('contact'); return null; }
-    return `command not found: ${head} — try "help"`;
-  }, [openHobbies, navigateSection]);
+  if (view === 'hobbies') {
+    return (
+      <>
+        <Nav active="hobbies" onNavigate={navigateSection} />
+        <HobbiesPage onBack={navigateSection} />
+      </>
+    );
+  }
 
   return (
     <>
-      {!booted && <BootScreen onDone={() => setBooted(true)} />}
-      <Rain />
-      <div className="crt" aria-hidden="true"></div>
-      <div className="sweep" aria-hidden="true"></div>
-      <TopBar active={active} />
-      {view === 'hobbies'
-        ? <HobbiesPage onBack={navigateSection} />
-        : (
-          <>
-            <Hero onNav={navigateSection} />
-            <About />
-            <Works />
-            <Strengths />
-            <Achievements />
-            <FAQ />
-            <Contact />
-            <footer className="footer">
-              <div className="w">
-                <p>process finished with exit code 0 — © 2026 Ryo.S. All rights reserved.</p>
-              </div>
-            </footer>
-          </>
-        )}
-      <CmdBar onCommand={handleCommand} />
+      <Nav active={active} onNavigate={navigateSection} />
+      <Hero onSecretOpen={openHobbies} />
+      <About />
+      <Works />
+      <Strengths />
+      <Achievements />
+      <FAQ />
+      <Contact />
+      <footer className="footer">
+        <div className="w footer-i">
+          <span className="footer-logo">Ryo.S</span>
+          <span className="footer-txt">© 2026 Ryo.S — Keep Challenging.</span>
+        </div>
+      </footer>
     </>
   );
 }
