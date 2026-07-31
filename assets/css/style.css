@@ -1225,3 +1225,19 @@ a {
   text-transform: uppercase;
   animation: blink 1.6s steps(1) infinite;
 }
+
+/* ── SEQUENTIAL PRINT: outputs wait for the command to finish typing ── */
+.cmd-sec:not(.typed) .sec-out .r {
+  opacity: 0 !important;
+  transform: translateY(10px) !important;
+}
+
+.hero:not(.typed) .r {
+  opacity: 0 !important;
+  transform: translateY(10px) !important;
+}
+
+.cmd-sec:not(.typed) .sec-out .char,
+.hero:not(.typed) .char {
+  transform: translateY(115%) !important;
+}
