@@ -594,6 +594,38 @@ function useMobileMarquee(ref, speed = 0.45) {
   }, []);
 }
 
+/* モバイルでカルーセルを一定間隔で次のカードへパッと送る (タッチ中は停止) */
+function useAutoSnap(ref, interval = 3200) {
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || REDUCED) return;
+    const mq = window.matchMedia('(max-width: 640px)');
+    let timer = null, resumeTimer = null, paused = false;
+    const tick = () => {
+      if (paused || !mq.matches || el.scrollWidth <= el.clientWidth) return;
+      const first = el.firstElementChild;
+      if (!first) return;
+      const gap = parseFloat(getComputedStyle(el).columnGap) || 16;
+      const step = first.getBoundingClientRect().width + gap;
+      const max = el.scrollWidth - el.clientWidth;
+      const next = el.scrollLeft >= max - 8 ? 0 : Math.min(max, (Math.round(el.scrollLeft / step) + 1) * step);
+      el.scrollTo({ left: next, behavior: 'smooth' });
+    };
+    const pause = () => { paused = true; clearTimeout(resumeTimer); };
+    const resume = () => { clearTimeout(resumeTimer); resumeTimer = setTimeout(() => { paused = false; }, 3500); };
+    el.addEventListener('touchstart', pause, { passive: true });
+    el.addEventListener('touchend', resume, { passive: true });
+    el.addEventListener('pointerdown', pause);
+    el.addEventListener('pointerup', resume);
+    timer = setInterval(tick, interval);
+    return () => {
+      clearInterval(timer); clearTimeout(resumeTimer);
+      el.removeEventListener('touchstart', pause); el.removeEventListener('touchend', resume);
+      el.removeEventListener('pointerdown', pause); el.removeEventListener('pointerup', resume);
+    };
+  }, []);
+}
+
 function WorkCard({ work, i }) {
   const url = work.url;
   const Tag = url ? 'a' : 'div';
@@ -646,13 +678,15 @@ function Works() {
 /* ── strengths ──────────────────────────────────── */
 
 function Strengths() {
+  const gridRef = useRef(null);
+  useAutoSnap(gridRef, 3200);
   return (
     <section id="strengths" className="sec sec-strengths" data-label="Strengths">
       <span className="doodle d-star2" aria-hidden="true">✳</span>
       <div className="w">
         <SectionTitle no="03" en="Strengths" jp="強み" />
         <p className="sec-intro r d1">専門知識と技術開発力、そしてチームでのコミュニケーション力を活かして、困難なプロジェクトを前進させます。</p>
-        <div className="str-grid">
+        <div className="str-grid" ref={gridRef}>
           {STRENGTHS.map((s, i) => (
             <div key={s.en} className="str-card" style={{ '--tape': s.tape, transitionDelay: `${(i % 2) * 0.08}s` }}>
               <Tape color={s.tape} className="t-str" />
@@ -671,6 +705,8 @@ function Strengths() {
 /* ── achievements ───────────────────────────────── */
 
 function Achievements() {
+  const gridRef = useRef(null);
+  useAutoSnap(gridRef, 3600);
   const stats = [
     { icon: 'uploads/47_programming_code_icon.png', label: 'ホワイトハッカーコンテスト入賞', value: 1, unit: '回', tape: '#FF5D8F' },
     { icon: 'uploads/50_development_laptop_icon.png', label: '個人プロジェクト開発数', value: 7, unit: '+', tape: '#7C5CFF' },
@@ -681,7 +717,7 @@ function Achievements() {
     <section id="achievements" className="sec sec-ach" data-label="Achievements">
       <div className="w">
         <SectionTitle no="04" en="Achievements" jp="実績" />
-        <div className="ach-grid">
+        <div className="ach-grid" ref={gridRef}>
           {stats.map((s, i) => (
             <div key={i} className="ach-card" style={{ '--tape': s.tape, transitionDelay: `${(i % 4) * 0.07}s` }}>
               <Tape color={s.tape} className="t-ach" />
