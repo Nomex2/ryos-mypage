@@ -251,9 +251,19 @@ a { text-decoration: none; color: inherit; }
   font-size: 17px;
   line-height: 2.05;
   color: var(--ink-dim);
-  max-width: 620px;
+  max-width: 700px;
   margin-bottom: 44px;
 }
+
+/* ── 日本語の改行最適化 ──
+   word-break: auto-phrase … 文節の切れ目で折り返す (Chrome/Edge。非対応ブラウザでは無視され通常折返し)
+   text-wrap: pretty / balance … 行末の孤立文字や不揃いを軽減 */
+.hero-lead, .sec-intro, .note-card p, .wc-desc, .str-desc, .ach-label,
+.faq-qt, .faq-a, .polaroid-note, .contact-lead, .hero-badge, .polaroid figcaption {
+  word-break: auto-phrase;
+  text-wrap: pretty;
+}
+.sec-title, .contact-title, .faq-qt { text-wrap: balance; }
 
 /* ── hero ── */
 .hero {
@@ -587,7 +597,7 @@ a { text-decoration: none; color: inherit; }
 .ach-label { font-size: 13.5px; line-height: 1.7; color: var(--ink-dim); margin-top: 12px; }
 
 /* ── faq ── */
-.faq-list { max-width: 860px; }
+.faq-list { max-width: 860px; margin: 0 auto; }
 .faq-item {
   background: var(--card);
   border: 2.5px solid var(--ink);
