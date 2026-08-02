@@ -92,14 +92,14 @@ const WORKS = [
   {
     title: 'EduCompass',
     tags: ['AI', 'Education', 'Data Analysis'],
-    desc: '生徒の課題解決能力や柔軟性などの数値データを用いてAI分析を行い、成長予測、クラス替え後の雰囲気推測、文部科学省の示す教育プロジェクト提案などを行う教師補助AIツール。',
+    desc: '生徒の学習データをAIで分析し、成長予測やクラス編成をサポートする教師補助ツール。',
     tape: '#7C5CFF',
     image: 'uploads/work_Educompass.webp',
   },
   {
     title: '研究室用語ライブラリ',
     tags: ['Static HTML', 'WebDAV', 'Glossary'],
-    desc: '研究室活動で出てきた用語を解説し、タグ分けして閲覧しやすくした静的HTMLアプリケーション。WEBDAV環境で動く軽量な用語ライブラリです。',
+    desc: '研究室で使う専門用語をタグで整理して引ける、軽量な用語集アプリ。',
     tape: '#22C1C3',
     url: 'https://nomex2.github.io/product/lab-glossary/',
     image: 'uploads/work_lab_glossary.webp',
@@ -107,7 +107,7 @@ const WORKS = [
   {
     title: 'Portfolio Site',
     tags: ['Portfolio', 'React', 'UI Design'],
-    desc: '自己紹介、制作実績、強み、趣味をまとめたポートフォリオサイト。見せ方や動きも含めて、自分らしさが伝わる構成を目指して構築しました。',
+    desc: '自己紹介や制作実績をまとめた、見せ方と動きにこだわったポートフォリオ。',
     tape: '#FFB84D',
     url: 'https://nomex2.github.io/product/',
     image: 'uploads/work_portfolio_site.webp',
@@ -115,7 +115,7 @@ const WORKS = [
   {
     title: 'Secure Quest',
     tags: ['React', 'Vite', 'Flask', 'SQLite'],
-    desc: 'セキュリティニュースを題材に、毎日クエスト形式でサイバーセキュリティを学べる学習アプリ。ログイン後にデイリークエストへ挑戦し、選択式の問題に回答してXPを獲得。レベル、ストリーク、過去クエストの確認機能もあります。',
+    desc: '毎日のクエスト形式でサイバーセキュリティを学べる学習アプリ。XPやレベル、ストリーク機能付き。',
     tape: '#FF5D8F',
     image: 'uploads/work_secure_quest.webp',
   },
@@ -123,7 +123,7 @@ const WORKS = [
     // TODO: ARG作品の正式なタイトル・URL・説明文・スクリーンショットに差し替え
     title: 'ARG Project',
     tags: ['ARG', 'Web', 'Puzzle'],
-    desc: 'Web上で展開する代替現実ゲーム（ARG）。隠しページや暗号を辿りながら物語を解き明かす、体験型の謎解きプロジェクトです。詳細は近日公開。',
+    desc: '隠しページや暗号を辿って物語を解き明かす、Webの体験型謎解きゲーム。詳細は近日公開。',
     tape: '#D8F24B',
     locked: true,
   },
