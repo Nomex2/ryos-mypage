@@ -564,6 +564,37 @@ function About() {
 
 /* ── works ──────────────────────────────────────── */
 
+/* モバイルで横方向にゆっくり自動スクロールするマーキー (タッチ中は停止) */
+function useMobileMarquee(ref, speed = 0.45) {
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || REDUCED) return;
+    const mq = window.matchMedia('(max-width: 640px)');
+    let raf = null, paused = false, resumeTimer = null, acc = 0;
+    const step = () => {
+      if (!paused && mq.matches && el.scrollWidth > el.clientWidth) {
+        acc += speed;
+        if (acc >= 1) { const px = Math.floor(acc); acc -= px; el.scrollLeft += px; }
+        const half = el.scrollWidth / 2;
+        if (half > 0 && el.scrollLeft >= half) el.scrollLeft -= half;
+      }
+      raf = requestAnimationFrame(step);
+    };
+    const pause = () => { paused = true; clearTimeout(resumeTimer); };
+    const resume = () => { clearTimeout(resumeTimer); resumeTimer = setTimeout(() => { paused = false; }, 2200); };
+    el.addEventListener('touchstart', pause, { passive: true });
+    el.addEventListener('touchend', resume, { passive: true });
+    el.addEventListener('pointerdown', pause);
+    el.addEventListener('pointerup', resume);
+    raf = requestAnimationFrame(step);
+    return () => {
+      cancelAnimationFrame(raf); clearTimeout(resumeTimer);
+      el.removeEventListener('touchstart', pause); el.removeEventListener('touchend', resume);
+      el.removeEventListener('pointerdown', pause); el.removeEventListener('pointerup', resume);
+    };
+  }, []);
+}
+
 function WorkCard({ work, i }) {
   const url = work.url || work.image;
   const Tag = url ? 'a' : 'div';
@@ -594,13 +625,19 @@ function WorkCard({ work, i }) {
 }
 
 function Works() {
+  const gridRef = useRef(null);
+  useMobileMarquee(gridRef);
   return (
     <section id="works" className="sec sec-works" data-label="Works">
       <div className="w">
         <SectionTitle no="02" en="Works" jp="制作実績" />
         <p className="sec-intro r d1">個人開発を中心に、AIやWeb技術を活かしたプロダクトを制作しています。ユーザー視点を大切に、シンプルで価値あるものを目指しています。</p>
-        <div className="work-grid">
+        <div className="work-grid" ref={gridRef}>
           {WORKS.map((w, i) => <WorkCard key={w.title} work={w} i={i} />)}
+          {/* モバイルのループ用複製 (デスクトップでは非表示) */}
+          <div className="work-dup" aria-hidden="true">
+            {WORKS.map((w, i) => <WorkCard key={`dup-${w.title}`} work={w} i={i} />)}
+          </div>
         </div>
       </div>
     </section>
