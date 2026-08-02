@@ -523,7 +523,7 @@ function Hero({ onSecretOpen }) {
         </div>
         <div className="hero-side">
           <HeroLogoGate onUnlock={onSecretOpen} />
-          <span className="polaroid-note r d3">切って、貼って、また挑む。<br /><b>Keep Challenging.</b></span>
+          <span className="polaroid-note r d3">つくって、ためして、また挑む。<br /><b>Keep Challenging.</b></span>
         </div>
       </div>
       <div className="scroll-cue" aria-hidden="true">scroll ↓</div>
