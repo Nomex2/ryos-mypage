@@ -517,6 +517,7 @@ a { text-decoration: none; color: inherit; }
 
 /* ── work / hobby cards ── */
 .work-grid, .hobby-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+.work-dup { display: none; } /* モバイルのマーキーループ用複製。@640で display: contents */
 .work-card, .hobby-card {
   position: relative;
   background: var(--card);
@@ -771,9 +772,43 @@ a { text-decoration: none; color: inherit; }
   .paper-scrap { opacity: 0.28; }
 }
 @media (max-width: 640px) {
-  .work-grid, .hobby-grid, .game-grid { grid-template-columns: 1fr; }
-  .str-grid { grid-template-columns: 1fr; }
-  .ach-grid { grid-template-columns: 1fr 1fr; }
+  .hobby-grid, .game-grid { grid-template-columns: 1fr; }
+  /* Works: 横1列でゆっくり自動スクロール (JSマーキー) */
+  .work-grid {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .work-grid::-webkit-scrollbar { display: none; }
+  .work-grid .work-card { width: 78vw; min-width: 78vw; flex-shrink: 0; }
+  .work-dup { display: contents; }
+  /* Strengths: 横スワイプでパッとスナップ */
+  .str-grid {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .str-grid::-webkit-scrollbar { display: none; }
+  .str-card { width: 80vw; min-width: 80vw; flex-shrink: 0; scroll-snap-align: center; }
+  /* Achievements: 横スワイプ (2枚見せ) */
+  .ach-grid {
+    display: flex;
+    gap: 14px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .ach-grid::-webkit-scrollbar { display: none; }
+  .ach-card { width: 44vw; min-width: 44vw; flex-shrink: 0; scroll-snap-align: start; }
   .nav { padding: 8px 10px 8px 16px; top: 12px; }
   .nav-logo { font-size: 20px; }
   .sec { padding: 78px 0; }
