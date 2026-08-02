@@ -115,17 +115,17 @@ const WORKS = [
   {
     title: 'Secure Quest',
     tags: ['React', 'Vite', 'Flask', 'SQLite'],
-    desc: '毎日のクエスト形式でサイバーセキュリティを学べる学習アプリ。XPやレベル、ストリーク機能付き。',
+    desc: '毎日のクエスト形式でサイバーセキュリティを学べる学習アプリ。',
     tape: '#FF5D8F',
     image: 'uploads/work_secure_quest.webp',
   },
   {
-    // TODO: ARG作品の正式なタイトル・URL・説明文・スクリーンショットに差し替え
-    title: 'ARG Project',
-    tags: ['ARG', 'Web', 'Puzzle'],
-    desc: '隠しページや暗号を辿って物語を解き明かす、Webの体験型謎解きゲーム。詳細は近日公開。',
+    title: '残響回廊 -ECHO CORRIDOR-',
+    tags: ['ARG', 'Web', 'Mystery'],
+    desc: '架空の大学サイトを舞台に、失踪した研究者の痕跡を辿る体験型の謎解きゲーム(ARG)。',
     tape: '#D8F24B',
-    locked: true,
+    url: 'https://note.com/nomex2/n/n5d20687cf94c',
+    image: 'uploads/work_echo_corridor.webp',
   },
 ];
 
