@@ -101,7 +101,6 @@ const WORKS = [
     tags: ['Static HTML', 'WebDAV', 'Glossary'],
     desc: '研究室で使う専門用語をタグで整理して引ける、軽量な用語集アプリ。',
     tape: '#22C1C3',
-    url: 'https://nomex2.github.io/product/lab-glossary/',
     image: 'uploads/work_lab_glossary.webp',
   },
   {
@@ -109,7 +108,7 @@ const WORKS = [
     tags: ['Portfolio', 'React', 'UI Design'],
     desc: '自己紹介や制作実績をまとめた、見せ方と動きにこだわったポートフォリオ。',
     tape: '#FFB84D',
-    url: 'https://nomex2.github.io/product/',
+    url: 'https://ryos-mypage.pages.dev/',
     image: 'uploads/work_portfolio_site.webp',
   },
   {
@@ -596,7 +595,7 @@ function useMobileMarquee(ref, speed = 0.45) {
 }
 
 function WorkCard({ work, i }) {
-  const url = work.url || work.image;
+  const url = work.url;
   const Tag = url ? 'a' : 'div';
   const [failed, setFailed] = useState(false);
   const showImg = work.image && !failed;
