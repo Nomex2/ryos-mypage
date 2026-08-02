@@ -555,7 +555,16 @@ a { text-decoration: none; color: inherit; }
   color: var(--ink);
 }
 .wc-title { font-family: var(--font-en); font-weight: 800; font-size: 23px; color: var(--ink); }
-.wc-desc { font-size: 15px; line-height: 1.95; color: var(--ink-dim); flex: 1; }
+.wc-desc {
+  font-size: 15px;
+  line-height: 1.95;
+  color: var(--ink-dim);
+  flex: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* 説明は最大3行。カードの縦伸び防止 */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
 .wc-open { font-family: var(--font-en); font-weight: 700; font-size: 15px; color: var(--pink); }
 
 /* ── strengths ── */
